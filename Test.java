@@ -1,3 +1,5 @@
+import java.util.Map;
+
 public class Test
 {
     public static void main(String argv[]) {
@@ -6,10 +8,13 @@ public class Test
     }
 
     public void runTest() {
-        Parser p = new Parser() {
-            public void parse() {
+        Parser p = new HashParser() {
+            public void runParser() {
                 swallow(Parser.character);
+                swallow("-");
+                capture("character", Parser.character);
             }
         };
+        Map h = (Map) p.parse("A-B");
     }
 }

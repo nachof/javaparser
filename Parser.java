@@ -2,14 +2,15 @@ public abstract class Parser
 {
     public static Parser character = new Character();
 
-    public abstract void parse();
+    public abstract void runParser();
 
-    void swallow(Parser p) {
+    public Object parse(String s) {
+        return null;
     }
 }
 
 class Character extends Parser
 {
-    public void parse(){
+    public void runParser(){
     }
 }
