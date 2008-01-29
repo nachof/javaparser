@@ -10,11 +10,12 @@ public class Test
     public void runTest() {
         Parser p = new HashParser() {
             public void runParser() {
-                swallow(Parser.character);
-                swallow("-");
+                discard(Parser.character);
+                discard("-");
                 capture("character", Parser.character);
             }
         };
         Map h = (Map) p.parse("A-B");
+        System.out.println(h.get("character"));
     }
 }

@@ -1,8 +1,8 @@
 public abstract class HashParser extends Parser
 {
-    void swallow(Parser p) {
+    void discard(Parser p) {
     }
-    void swallow(String s){
+    void discard(String s){
     }
     void capture(String name, Parser p) {
     }
