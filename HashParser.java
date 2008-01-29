@@ -1,9 +1,15 @@
 public abstract class HashParser extends Parser
 {
-    void discard(Parser p) {
+    protected void discard(Parser p) {
     }
-    void discard(String s){
+    protected void discard(String s){
     }
-    void capture(String name, Parser p) {
+    protected void capture(String name, Parser p) {
     }
+
+    public Object parse(String s) {
+        return null;
+    }
+
+    public abstract void runParser();
 }

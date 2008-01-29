@@ -1,15 +1,12 @@
 public abstract class Parser 
 {
-    private String originalString;
-    private String finalString;
+    protected String originalString;
+    protected String finalString;
 
     public static Parser character = new Character();
 
-    public abstract void runParser();
 
-    public Object parse(String s) {
-        return null;
-    }
+    public abstract Object parse(String s);
 
     public String getRemainder() {
         return finalString;
@@ -18,6 +15,14 @@ public abstract class Parser
 
 class Character extends Parser
 {
-    public void runParser(){
+
+    public Object parse(String s) {
+        originalString = s;
+        if (s != null && s.length() > 0) {
+            finalString = s.substring(1);
+            return s.substring(0, 1);
+        } else {
+            throw new NoMatchException();
+        }
     }
 }
