@@ -1,3 +1,6 @@
+import java.util.List;
+import java.util.ArrayList;
+
 public abstract class Parser 
 {
     protected String originalString;
@@ -12,6 +15,12 @@ public abstract class Parser
         return maybe(new NamedString(s));
     }
 
+    public static Parser repeat(String s) {
+        return repeat(new NamedString(s));
+    }
+    public static Parser repeat(Parser p) {
+        return new Repeat(p);
+    }
 
     public abstract Object parse(String s);
 
@@ -70,5 +79,30 @@ class Maybe extends Parser
             finalString = s;
             return null;
         }
+    }
+}
+
+class Repeat extends Parser
+{
+    private Parser parser;
+
+    public Repeat(Parser p) {
+        parser = p;
+    }
+
+    public Object parse(String s) {
+        originalString = s;
+        finalString = s;
+        List resultado = new ArrayList();
+        try {
+            while(true) {
+                Object res = parser.parse(finalString);
+                finalString = parser.getRemainder();
+                resultado.add(res);
+            }
+        } catch (NoMatchException e) {
+            // Do Nothing -- end processing
+        }
+        return resultado;
     }
 }
