@@ -12,10 +12,11 @@ public class Test
             public void runParser() {
                 discard(Parser.character);
                 discard("-");
+                discard(Parser.maybe("-"));
                 capture("character", Parser.character);
             }
         };
-        Map h = (Map) p.parse("A-B");
+        Map h = (Map) p.parse("A--B");
         System.out.println(h.get("character"));
     }
 }
