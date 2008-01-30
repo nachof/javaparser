@@ -15,12 +15,30 @@ public abstract class Parser
 
 class Character extends Parser
 {
-
     public Object parse(String s) {
         originalString = s;
         if (s != null && s.length() > 0) {
             finalString = s.substring(1);
             return s.substring(0, 1);
+        } else {
+            throw new NoMatchException();
+        }
+    }
+}
+
+class NamedString extends Parser
+{
+    private String word;
+    public NamedString(String w) {
+        word = w;
+    }
+
+    public Object parse(String s) {
+        originalString = s;
+        int slength = word.length();
+        if (s != null && s.length() >= slength && s.substring(0, slength).equals(word)) {
+            finalString = s.substring(slength);
+            return word;
         } else {
             throw new NoMatchException();
         }
