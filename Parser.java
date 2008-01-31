@@ -7,6 +7,7 @@ public abstract class Parser
     protected String finalString;
 
     public static Parser character = new Character();
+    public static Parser integer = new IntegerParser();
 
     public static Parser maybe(Parser p) {
         return new Maybe(p);
@@ -39,6 +40,22 @@ class Character extends Parser
         } else {
             throw new NoMatchException(s);
         }
+    }
+}
+
+class IntegerParser extends Parser
+{
+    public Object parse(String s) {
+        int i = 0;
+        while (s.length() > i && s.charAt(i) >= '0' && s.charAt(i) <= '9') {
+            i++;
+        }
+        if (i == 0)
+            throw new NoMatchException(s);
+        String number = s.substring(0, i);
+        finalString = s.substring(i);
+        Integer result = Integer.valueOf(number);
+        return result;
     }
 }
 
