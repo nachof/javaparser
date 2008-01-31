@@ -37,7 +37,7 @@ class Character extends Parser
             finalString = s.substring(1);
             return s.substring(0, 1);
         } else {
-            throw new NoMatchException();
+            throw new NoMatchException(s);
         }
     }
 }
@@ -56,7 +56,7 @@ class NamedString extends Parser
             finalString = s.substring(slength);
             return word;
         } else {
-            throw new NoMatchException();
+            throw new NoMatchException(s);
         }
     }
 }
