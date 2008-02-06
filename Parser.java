@@ -23,6 +23,11 @@ public abstract class Parser
         return new Repeat(p);
     }
 
+    public static Parser either(Parser p1, Parser p2) {
+        return new EitherParser(p1, p2);
+    }
+
+
     public abstract Object parse(String s);
 
     public String getRemainder() {
@@ -123,3 +128,29 @@ class Repeat extends Parser
         return resultado;
     }
 }
+
+class EitherParser extends Parser
+{
+    private Parser p1;
+    private Parser p2;
+    public EitherParser(Parser p1, Parser p2)
+    {
+        this.p1 = p1;
+        this.p2 = p2;
+    }
+
+    public Object parse(String s)
+    {
+        Object result;
+        try {
+            result = p1.parse(s);
+            finalString = p1.getRemainder();
+            return result;
+        } catch (NoMatchException e) {
+            result = p2.parse(s);
+            finalString = p2.getRemainder();
+            return result;
+        }
+    }
+}
+
