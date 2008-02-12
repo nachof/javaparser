@@ -27,5 +27,16 @@ public class Test
         String hora = "15:38";
         Map m = (Map) parserHora.parse(hora);
         System.out.println("Hora: " + m.get("hora") + "\nMinutos: " + m.get("minutos"));
+        final Parser testRecursivo = new HashParser() {
+            public void runParser() {
+                discard("(");
+                capture("v", Parser.either(this, Parser.character));
+                discard(")");
+            }
+        };
+        String parens = "((a))";
+        Map mr = (Map) testRecursivo.parse(parens);
+        System.out.println(mr.get("v"));
+        System.out.println(((Map)mr.get("v")).get("v"));
     }
 }
