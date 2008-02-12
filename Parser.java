@@ -3,9 +3,6 @@ import java.util.ArrayList;
 
 public abstract class Parser 
 {
-    protected String originalString;
-    protected String finalString;
-
     public static Parser character = new Character();
     public static Parser integer = new IntegerParser();
 
@@ -28,20 +25,19 @@ public abstract class Parser
     }
 
 
-    public abstract Object parse(String s);
-
-    public String getRemainder() {
-        return finalString;
+    public final Object parse(String s) {
+        ParseResult res = doParse(s);
+        return res.getObject();
     }
+
+    public abstract ParseResult doParse(String s);
 }
 
 class Character extends Parser
 {
-    public Object parse(String s) {
-        originalString = s;
+    public ParseResult doParse(String s) {
         if (s != null && s.length() > 0) {
-            finalString = s.substring(1);
-            return s.substring(0, 1);
+            return new ParseResult(s.substring(0, 1), s.substring(1));
         } else {
             throw new NoMatchException(s);
         }
@@ -50,7 +46,7 @@ class Character extends Parser
 
 class IntegerParser extends Parser
 {
-    public Object parse(String s) {
+    public ParseResult doParse(String s) {
         int i = 0;
         while (s.length() > i && s.charAt(i) >= '0' && s.charAt(i) <= '9') {
             i++;
@@ -58,9 +54,8 @@ class IntegerParser extends Parser
         if (i == 0)
             throw new NoMatchException(s);
         String number = s.substring(0, i);
-        finalString = s.substring(i);
         Integer result = Integer.valueOf(number);
-        return result;
+        return new ParseResult(result, s.substring(i));
     }
 }
 
@@ -71,12 +66,10 @@ class NamedString extends Parser
         word = w;
     }
 
-    public Object parse(String s) {
-        originalString = s;
+    public ParseResult doParse(String s) {
         int slength = word.length();
         if (s != null && s.length() >= slength && s.substring(0, slength).equals(word)) {
-            finalString = s.substring(slength);
-            return word;
+            return new ParseResult(word, s.substring(slength));
         } else {
             throw new NoMatchException(s);
         }
@@ -91,15 +84,12 @@ class Maybe extends Parser
         parser = p;
     }
 
-    public Object parse(String s) {
-        originalString = s;
+    public ParseResult doParse(String s) {
         try {
-            Object result = parser.parse(s);
-            finalString = parser.getRemainder();
+            ParseResult result = parser.doParse(s);
             return result;
         } catch (NoMatchException e) {
-            finalString = s;
-            return null;
+            return new ParseResult(null, s);
         }
     }
 }
@@ -112,20 +102,19 @@ class Repeat extends Parser
         parser = p;
     }
 
-    public Object parse(String s) {
-        originalString = s;
-        finalString = s;
+    public ParseResult doParse(String s) {
+        String finalString = s;
         List resultado = new ArrayList();
         try {
             while(true) {
-                Object res = parser.parse(finalString);
-                finalString = parser.getRemainder();
-                resultado.add(res);
+                ParseResult res = parser.doParse(finalString);
+                finalString = res.getRemainder();
+                resultado.add(res.getObject());
             }
         } catch (NoMatchException e) {
             // Do Nothing -- end processing
         }
-        return resultado;
+        return new ParseResult(resultado, finalString);
     }
 }
 
@@ -139,18 +128,34 @@ class EitherParser extends Parser
         this.p2 = p2;
     }
 
-    public Object parse(String s)
+    public ParseResult doParse(String s)
     {
-        Object result;
+        ParseResult result;
         try {
-            result = p1.parse(s);
-            finalString = p1.getRemainder();
+            result = p1.doParse(s);
             return result;
         } catch (NoMatchException e) {
-            result = p2.parse(s);
-            finalString = p2.getRemainder();
+            result = p2.doParse(s);
             return result;
         }
     }
 }
 
+class ParseResult
+{
+    private Object retrievedObject;
+    private String remainder;
+
+    public ParseResult(Object retrievedObject, String remainder) {
+        this.remainder = remainder;
+        this.retrievedObject = retrievedObject;
+    }
+
+    public Object getObject() {
+        return this.retrievedObject;
+    }
+
+    public String getRemainder() {
+        return this.remainder;
+    }
+}

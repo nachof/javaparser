@@ -5,29 +5,29 @@ import java.util.HashMap;
 public abstract class HashParser extends Parser
 {
     private Map retorno;
+    private String finalString;
 
     protected void discard(Parser p) {
         p.parse(finalString);
-        finalString = p.getRemainder();
+        finalString = p.doParse(finalString).getRemainder();
     }
 
     protected void discard(String s){
         Parser p = new NamedString(s);
-        p.parse(finalString);
-        finalString = p.getRemainder();
+        finalString = p.doParse(finalString).getRemainder();
     }
 
     protected void capture(String name, Parser p) {
-        retorno.put(name, p.parse(finalString));
-        finalString = p.getRemainder();
+        ParseResult result = p.doParse(finalString);
+        retorno.put(name, result.getObject());
+        finalString = result.getRemainder();
     }
 
-    public Object parse(String s) {
-        originalString = s;
+    public ParseResult doParse(String s) {
         finalString = s;
         retorno = new HashMap();
         runParser();
-        return retorno;
+        return new ParseResult(retorno, finalString);
     }
 
     public abstract void runParser();
