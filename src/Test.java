@@ -1,5 +1,8 @@
 import java.util.Map;
 
+import parser.Parser;
+import parser.HashParser;
+
 public class Test
 {
     public static void main(String argv[]) {

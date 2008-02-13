@@ -1,3 +1,5 @@
+package parser;
+
 public class NoMatchException extends RuntimeException
 {
     public NoMatchException(String unparsableInput) {
