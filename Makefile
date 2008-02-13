@@ -1,12 +1,16 @@
 BINDIR=bin
 SRCDIR=src
 
-run: compile
+
+run: $(BINDIR) compile
 	java -classpath $(BINDIR) Test
 
-compile: clean
+$(BINDIR):
+	mkdir $(BINDIR)
+
+compile: $(BINDIR) clean
 	javac -d $(BINDIR) -sourcepath $(SRCDIR) -g -target 1.4 -source 1.4 $(SRCDIR)/Test.java 
 
-clean:
+clean: $(BINDIR)
 	rm -f `find $(BINDIR) -name '*.class'`
 
