@@ -5,6 +5,7 @@ import java.util.EmptyStackException;
 import java.util.Map;
 import java.util.HashMap;
 
+import parser.concreteparsers.ConcreteStringParser;
 
 public abstract class HashParser extends Parser
 {
@@ -19,7 +20,7 @@ public abstract class HashParser extends Parser
     }
 
     protected void discard(String s){
-        Parser p = new NamedString(s);
+        Parser p = new ConcreteStringParser(s);
         finalString = p.doParse(finalString).getRemainder();
     }
 
