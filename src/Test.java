@@ -1,4 +1,5 @@
 import java.util.Map;
+import java.util.List;
 
 import parser.Parser;
 import parser.HashParser;
@@ -41,5 +42,8 @@ public class Test
         Map mr = (Map) testRecursivo.parse(parens);
         System.out.println(mr.get("v"));
         System.out.println(((Map)mr.get("v")).get("v"));
+
+        List l = (List) Parser.repeat(Parser.character).parse("1234567890");
+        System.out.println(l);
     }
 }
