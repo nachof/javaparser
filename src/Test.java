@@ -13,18 +13,18 @@ public class Test
     public void runTest() {
         Parser p = new HashParser() {
             public void runParser() {
-                discard(Parser.character);
-                discard(Parser.repeat("-"));
-                capture("character", Parser.character);
+                discard(character);
+                discard(repeat("-"));
+                capture("character", character);
             }
         };
         Map h = (Map) p.parse("A--B");
         System.out.println(h.get("character"));
         Parser parserHora = new  HashParser () {
             public void runParser() {
-                capture("hora", Parser.integer);
+                capture("hora", integer);
                 discard(":");
-                capture("minutos", Parser.integer);
+                capture("minutos", integer);
             }
         };
         String hora = "15:38";
@@ -33,7 +33,7 @@ public class Test
         final Parser testRecursivo = new HashParser() {
             public void runParser() {
                 discard("(");
-                capture("v", Parser.either(this, Parser.character));
+                capture("v", either(this, character));
                 discard(")");
             }
         };
