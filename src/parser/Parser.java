@@ -28,6 +28,9 @@ public abstract class Parser
         return new EitherParser(p1, p2);
     }
 
+    public static Parser lines(Parser p) {
+        return new LinesParser(p);
+    }
 
     public final Object parse(String s) {
         ParseResult res = doParse(s);

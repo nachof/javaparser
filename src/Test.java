@@ -45,5 +45,8 @@ public class Test
 
         List l = (List) Parser.repeat(Parser.character).parse("1234567890");
         System.out.println(l);
+
+        List l2 = (List) Parser.lines(Parser.integer).parse("23\n456\n789");
+        System.out.println(l2);
     }
 }
