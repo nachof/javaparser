@@ -1,4 +1,3 @@
 * Testeo (junit)
-* Parsers atómicos
-* funciones estçáticas
-
+* Parsers concretos faltantes (uno para regexp estaría bueno)
+* Comentarios a todo
