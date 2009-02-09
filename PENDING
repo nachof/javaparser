@@ -1,3 +1,2 @@
-* Testeo (junit)
-* Parsers concretos faltantes (uno para regexp estaría bueno)
-* Comentarios a todo
+* Testing (junit)
+* Some concrete parsers (for example, something for regexps might be useful)
