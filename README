@@ -1,0 +1,3 @@
+This is no longer mantained (it never was).
+This was a parser I wrote on February 2008. It was meant to replace an ugly parser we were using at my then current job. They didn't approve the time for it, so I just did it at home. It was an interesting exercise, but after the initial development, it never saw much use (I quit that job a few weeks after that, so it never got used there).
+I'm putting it here just in case somebody finds it useful. Beware: it's not properly tested.
